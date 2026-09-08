@@ -1,0 +1,181 @@
+/* GERADO por scripts/gerar-temas.mjs — NÃO EDITE.
+ * A família embutida como literal — zero import de runtime, de propósito:
+ * carrega em Vite, em Node puro e no padrão esbuild+data-URL do repositório
+ * igualmente (ver o comentário de `gerarFamiliasTs` em gerar-temas.mjs).
+ * A fonte é src/tokens/temas/*.json. */
+
+import type { Esquema, FamiliaDeTema, Tema } from './tema'
+
+export const familias = [
+  {
+    "id": "enzo",
+    "nome": "Enzo",
+    "descricao": "Ciano sobre neutros frios. Curva, sombra difusa e leveza — o oposto da reta seca. O escuro é o tema padrão.",
+    "origem": {
+      "neutro": {
+        "matiz": 231,
+        "croma": 0.02
+      },
+      "acento": {
+        "matiz": 220,
+        "croma": 0.09
+      },
+      "positivo": {
+        "matiz": 122,
+        "croma": 0.17
+      },
+      "negativo": {
+        "matiz": 25,
+        "croma": 0.15
+      }
+    },
+    "rampas": {
+      "neutro": {
+        "0": "#FFFFFF",
+        "50": "#F3FAFD",
+        "75": "#EAF1F5",
+        "100": "#E3EBEF",
+        "200": "#C4D0D6",
+        "300": "#9CAAB2",
+        "350": "#82929A",
+        "400": "#65767F",
+        "500": "#475861",
+        "600": "#2E4049",
+        "700": "#23363F",
+        "800": "#142730",
+        "900": "#041B28",
+        "950": "#000000",
+        "1000": "#000306"
+      },
+      "acento": {
+        "50": "#D3EDF6",
+        "100": "#B4E0EF",
+        "200": "#8CD0E6",
+        "300": "#6BC9E6",
+        "400": "#27A8C5",
+        "500": "#2285A0",
+        "600": "#136779",
+        "700": "#0A596C",
+        "800": "#004E5F",
+        "900": "#003947",
+        "950": "#002934"
+      },
+      "positivo": {
+        "50": "#F0FADC",
+        "100": "#E8F8C4",
+        "200": "#DFF7A4",
+        "300": "#D8F789",
+        "400": "#D3F570",
+        "500": "#ACCE3E",
+        "600": "#809D00",
+        "700": "#5D7300",
+        "800": "#3F4F00",
+        "900": "#283300",
+        "950": "#1B2300"
+      },
+      "negativo": {
+        "50": "#FFE4E1",
+        "100": "#FFD1CD",
+        "200": "#FFBAB3",
+        "300": "#FF958D",
+        "400": "#F57070",
+        "500": "#ED5959",
+        "600": "#CF4040",
+        "700": "#AC3031",
+        "800": "#892122",
+        "900": "#621516",
+        "950": "#490D0E"
+      }
+    },
+    "voltagem": {
+      "escuro": "#3ED3F2",
+      "claro": "#136779"
+    },
+    "esquemas": {
+      "escuro": {
+        "papeis": {
+          "canvas": "neutro.950",
+          "card": "neutro.900",
+          "well": "neutro.1000",
+          "soft": "neutro.800",
+          "hair": "neutro.700",
+          "ink": "neutro.50",
+          "dim": "neutro.300",
+          "dimmer": "neutro.400",
+          "accent": "acento.voltagem",
+          "accent-text": "acento.300",
+          "accent-bg": "acento.950",
+          "action": "acento.400",
+          "on-action": "neutro.950",
+          "on-accent": "neutro.950",
+          "on-accent-bg": "neutro.50",
+          "positivo": "positivo.400",
+          "negativo": "negativo.500",
+          "on-positivo": "neutro.950",
+          "on-negativo": "neutro.950",
+          "positivo-text": "positivo.400",
+          "negativo-text": "negativo.400",
+          "bench": "neutro.400",
+          "on-bench": "neutro.0"
+        },
+        "cartaoComRegua": true,
+        "sombra": {
+          "forca": 1
+        },
+        "lavagem": {
+          "forca": "4%"
+        }
+      },
+      "claro": {
+        "papeis": {
+          "canvas": "neutro.50",
+          "card": "neutro.0",
+          "well": "neutro.75",
+          "soft": "neutro.100",
+          "hair": "neutro.200",
+          "ink": "neutro.950",
+          "dim": "neutro.500",
+          "dimmer": "neutro.350",
+          "accent": "acento.voltagem",
+          "accent-text": "acento.800",
+          "accent-bg": "acento.50",
+          "action": "acento.600",
+          "on-action": "neutro.0",
+          "on-accent": "neutro.0",
+          "on-accent-bg": "neutro.950",
+          "positivo": "positivo.700",
+          "negativo": "negativo.600",
+          "on-positivo": "neutro.0",
+          "on-negativo": "neutro.0",
+          "positivo-text": "positivo.800",
+          "negativo-text": "negativo.700",
+          "bench": "neutro.400",
+          "on-bench": "neutro.0"
+        },
+        "cartaoComRegua": true,
+        "sombra": {
+          "forca": 0.5
+        },
+        "lavagem": {
+          "forca": "6%"
+        }
+      }
+    }
+  }
+] as unknown as FamiliaDeTema[]
+
+export const TEMA_PADRAO = 'enzo-escuro'
+
+/** Os dois temas da família — a mesma conta de `temasDaFamilia()` (tema.ts),
+ *  reescrita aqui porque este arquivo não pode importar nada em runtime (ver
+ *  acima). */
+export const temas: Tema[] = familias.flatMap((f) => {
+  const escuro: Esquema = 'escuro'
+  const claro: Esquema = 'claro'
+  return [
+    { id: `${f.id}-escuro`, familia: f, esquema: escuro, par: `${f.id}-claro` },
+    { id: `${f.id}-claro`, familia: f, esquema: claro, par: `${f.id}-escuro` },
+  ]
+})
+
+export const acharTema = (id: string) => temas.find((t) => t.id === id)

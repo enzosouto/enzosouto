@@ -1,0 +1,161 @@
+/* =============================================================================
+   A SUPERFÍCIE LÍQUIDA — o desenho do site.
+
+   A marca é água, então a página não tem aresta viva: curva grande em tudo,
+   botão em pílula, seções alternando fundo como faixas de maré, e um marcador
+   de cartão que é um recipiente com nível, não um ponto.
+
+   ISTO JÁ FOI UMA PROPOSTA EM AVALIAÇÃO. Nasceu como "pele 3c", escopada em
+   `[data-layout='3c']` e ligada por `?layout=3c`, ao lado de uma segunda
+   proposta editorial (3a) na mesma página — as duas mostrando o MESMO
+   conteúdo, para a comparação ser sobre forma e não sobre texto. A 3c ganhou;
+   a 3a foi descartada, e com ela o mecanismo inteiro de pele. O que sobrou é
+   só o desenho, aplicado direto — o atributo de layout não existe mais, e um
+   seletor `[data-layout=…]` que reapareça aqui é resto de mudança incompleta.
+
+   Os ganchos são `data-test`, não classes internas: os componentes têm estilo
+   `scoped`, e um seletor de classe de fora não os alcança. O atributo é
+   contrato público e sobrevive a refatoração de classe.
+
+   A ESPECIFICIDADE DA RAIZ É `:root` DE PROPÓSITO. Os tokens de curva vêm dos
+   temas, em `[data-tema='…']`, que também mede 0-1-0. O empate é resolvido pela
+   ORDEM de importação: `main.ts` traz este arquivo depois de `style.css`, e é
+   isso que faz a curva grande valer. Baixar para `html` (0-0-1) perderia o
+   empate e a página nasceria quadrada, sem erro nenhum.
+   ========================================================================== */
+
+:root {
+  /* Curva grande é a decisão que carrega a proposta inteira. */
+  --curva-sm: 12px;
+  --curva-lg: 22px;
+  --curva-xl: 28px;
+}
+
+/* -----------------------------------------------------------------------------
+   Superfícies: nenhuma aresta viva.
+-------------------------------------------------------------------------- */
+[data-test='card'] {
+  position: relative;
+  border-radius: var(--curva-xl);
+  border-color: transparent;
+  background: color-mix(in srgb, var(--color-card) 92%, var(--color-canvas));
+}
+
+[data-test='button'] {
+  border-radius: 999px;
+}
+
+[data-test='panel'],
+[data-test='chip'] {
+  border-radius: var(--curva-xl);
+}
+
+/* -----------------------------------------------------------------------------
+   ESPAÇO PARA O PIN.
+
+   O marcador do cartão é o `AcqWavePin` — o componente do livro, teleportado
+   para dentro do cabeçalho por `AmbienteLiquido.vue`. Aqui só se abre o lugar dele.
+
+   A primeira versão desenhava uma gota à mão: um círculo com gradiente animado
+   subindo e descendo. Parecia a marca e não era — mesma água só de vista, e
+   divergiria dela na primeira vez que a marca mudasse. O pin verdadeiro é o
+   mesmo mecanismo do `AcqWave` com a máscara trocada por um disco, então marca
+   e marcador são a MESMA água, por construção.
+
+   O `:root` NA FRENTE NÃO É ENFEITE — É A ESPECIFICIDADE. O cabeçalho do
+   cartão traz `padding: 24px 26px 0` do estilo `scoped` do `AcqCard`, que com o
+   atributo de escopo do Vue mede 0-2-0. `[data-test='card'] > header` sozinho
+   mede 0-1-1 e PERDE: o padding volta a 24px, a folga some e o pin pousa em
+   cima do título — foi exatamente o que aconteceu ao promover esta folha a
+   padrão, porque antes ela vinha prefixada por `[data-layout='3c']` e o
+   prefixo, sem querer, era quem ganhava o empate. `:root` devolve os 0-2-1 de
+   propósito e por escrito, em vez de por acidente.
+-------------------------------------------------------------------------- */
+:root [data-test='card'] > header {
+  padding-top: 58px;
+}
+
+/* -----------------------------------------------------------------------------
+   O FUNDO É UM SÓ, E É PRETO.
+
+   Houve aqui uma alternância de faixas — seções pares com fundo próprio,
+   sangrando até a borda da janela, como maré. Ela existiu por duas versões e
+   caiu por decisão de desenho: com o canvas em preto puro, o preto contínuo
+   ficou melhor do que qualquer par de tons. A água aparece onde ela é a marca
+   (o mar atrás da capa, o pin no cartão, a onda no toque) e não como listra de
+   fundo repetida a cada assunto.
+
+   O QUE FOI EMBORA JUNTO, e por quê: a repartição do vazio das seções
+   (`--acq-sec-parte`). Ela existia porque, com faixa colorida, o respiro que
+   vinha todo de baixo ficava da cor da seção ANTERIOR e o título nascia colado
+   no topo do novo bloco. Sem faixa, os dois vazios voltam a ser o mesmo vazio e
+   o padrão do `AcqSection` volta a estar certo — manter a repartição seria
+   configuração ativa sem motivo, do tipo que ninguém sabe remover depois.
+
+   Se a alternância voltar um dia, as duas coisas voltam JUNTAS: o fundo por
+   `:nth-of-type(even)` com `inset: 0 -50vw` no `::before`, e a repartição em
+   `.5`. Uma sem a outra é o título colado.
+-------------------------------------------------------------------------- */
+
+/* -----------------------------------------------------------------------------
+   OS DOIS FLUTUANTES NO TELEFONE.
+
+   O painel de acessibilidade e a barra de contato são ancorados na viewport, e
+   numa tela de 390px eles disputam a mesma faixa de baixo com o texto que está
+   sendo lido. O `AcqA11y` já sobe para 86px no telefone, acima da barra — mas
+   como PÍLULA COM RÓTULO ele ocupa 162px de largura e 48 de altura, e o que
+   sobra é um retângulo permanente pousado no meio do parágrafo.
+
+   Aqui ele vira só o SÍMBOLO. O ícone de acesso é o pictograma mais
+   padronizado da interface — ele não depende da palavra para ser reconhecido —
+   e o botão continua com nome para leitor de tela, porque quem esconde o texto
+   é o CSS, não a árvore de acessibilidade: `aria-label` no botão preserva o
+   anúncio. A área de toque continua com 44px de lado, que é o mínimo.
+
+   Por que aqui e não no componente: onde os controles flutuantes pousam é
+   decisão de COMPOSIÇÃO deste produto — é este site que tem duas âncoras
+   embaixo. Um livro sem barra de contato não tem o problema, e não deve herdar
+   a solução.
+-------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .a11y .gatilho {
+    padding: 0;
+    width: 44px;
+    justify-content: center;
+    /* O fundo do cartão é translúcido nesta pele; sobre texto em movimento ele
+       deixava as linhas passarem por dentro do botão. Aqui a superfície é a do
+       canvas, opaca, porque o botão precisa parecer POUSADO sobre a página. */
+    background: var(--color-canvas);
+  }
+
+  .a11y .gatilho > span,
+  .a11y .gatilho > b {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+
+/* -----------------------------------------------------------------------------
+   ÂNCORA NÃO PODE PARAR ATRÁS DA BARRA FIXA.
+
+   O cabeçalho aparece assim que a página passa do hero e fica grudado no alto,
+   com 69px. `location.hash = '#metodo'` leva o topo da seção a y=0 — e y=0 é
+   justamente onde a barra está. Medido em produção: `#constroi`, `#metodo` e
+   `#garantias` chegavam com `topo=0` contra uma barra de 69, ou seja, o rótulo
+   e a primeira linha do título nasciam escondidos. Só `#contato` escapava, por
+   ser a última e não ter para onde rolar.
+
+   `scroll-margin-top` resolve no lugar certo: ele muda para onde a ROLAGEM
+   pousa, sem mexer no layout, sem um pixel de espaço a mais na página e sem
+   JavaScript. A conta acompanha `--acq-esc` porque a barra cresce junto com a
+   escala de texto que o leitor escolher — um valor fixo acertaria no padrão e
+   erraria exatamente para quem mais precisa de folga.
+-------------------------------------------------------------------------- */
+main [id],
+#conteudo {
+  scroll-margin-top: calc(88px * var(--acq-esc, 1));
+}

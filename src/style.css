@@ -1,0 +1,162 @@
+@import 'tailwindcss';
+@import './temas.gen.css';
+
+/* ---------------------------------------------------------------------------
+   FUNDAMENTOS DE FORMA E MOVIMENTO.
+
+   As CORES saem de `src/temas.gen.css` (gerado de `src/tokens/temas/*.json`
+   por `scripts/gerar-temas.mjs`) — nenhum componente deste projeto escreve
+   hex literal, todo `.vue` lê `var(--color-*)`.
+
+   CURVA e MOVIMENTO saem de AQUI, na forma exata que `src/tokens/curva.ts`,
+   `elevation.ts` e `motion.ts` documentam. Os 40+ componentes de
+   `src/lib/base` já leem `var(--curva-*)`, `var(--elev-*)`, `var(--mov-*)` e
+   `var(--dur-*)` — SE ESTE BLOCO FALTAR OU USAR OUTRO NOME, eles não erram:
+   `border-radius: var(--curva-xl)` sem a variável resolve para o valor
+   inicial da propriedade, e o componente nasce quadrado, sem sombra e sem
+   transição, SEM AVISO NENHUM. É a pior classe de defeito: não existe stack
+   trace para seguir, só o olho.
+--------------------------------------------------------------------------- */
+:root {
+  /* Tipografia. Família única — não há segunda voz tipográfica no sistema.
+     `--font-mono` só é legítimo dentro de AcqCode (tokens/type.ts). */
+  --font-sans: 'Montserrat', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  /* Curva. tokens/curva.ts — o raio cresce com a ÁREA, nunca com a
+     importância. `scripts/verificar-curvas.mjs` reprova todo border-radius
+     literal fora desta escada (exceto 0, 50% e 999px, que são forma). */
+  --curva-sm: 8px;
+  --curva-md: 16px;
+  --curva-lg: 20px;
+  --curva-xl: 24px;
+  --curva-pill: 999px;
+
+  /* Elevação. tokens/elevation.ts — a pergunta é "a que altura?", nunca
+     "isto flutua?": toda superfície estática já carrega repouso.
+     `--sombra-forca` é emitida por esquema em temas.gen.css (1 no escuro,
+     0.5 no claro — sombra preta precisa de mais opacidade para aparecer
+     sobre fundo quase-preto). */
+  --elev-repouso: 0 2px 8px -2px rgb(0 0 0 / calc(0.18 * var(--sombra-forca)));
+  --elev-flutua: 0 12px 32px -8px rgb(0 0 0 / calc(0.34 * var(--sombra-forca)));
+  --elev-foco: 0 0 0 3px color-mix(in srgb, var(--color-accent) 35%, transparent);
+
+  /* Movimento. tokens/motion.ts — curvas líquidas, nunca linear ou
+     ease-in-out escrito à mão num componente. */
+  --mov-onda: cubic-bezier(.36, .11, .16, 1);
+  --mov-mare: cubic-bezier(.65, 0, .35, 1);
+  --dur-rapido: 180ms;
+  --dur-padrao: 280ms;
+  --dur-lento: 420ms;
+  --dur-mare: 4600ms;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Herdar a cor evita que um <a> sem estilo caia na cor de link do navegador —
+   sai azul ou roxo sobre o canvas quase-preto do tema escuro. */
+a {
+  color: inherit;
+}
+
+::selection {
+  background: var(--color-accent-bg);
+  color: var(--color-on-accent-bg);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  box-shadow: var(--elev-foco);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   PREFERÊNCIAS DE ACESSIBILIDADE — o contrato que o AcqA11y liga e desliga.
+
+   Cada classe REMAPEIA TOKEN; nenhuma estiliza elemento. É a decisão que faz
+   isto caber em poucas linhas: como todo componente do sistema já lê
+   `var(--color-*)` e `var(--font-*)`, trocar o valor da variável sob uma
+   classe na raiz muda a página inteira de uma vez.
+
+   PREFIXO `acq-` (não `acq-a-`: o prefixo já termina em hífen, e o sufixo de
+   cada preferência começa em `a-` — `acq-` + `a-forte` = `acq-a-forte`).
+   NÃO EXISTE "fonte simples nos títulos": o sistema tem uma família só
+   (`--font-sans`), então não há segunda fonte para essa opção trocar — ver
+   `src/tokens/a11y.ts` para o catálogo completo e o porquê de cada opção.
+--------------------------------------------------------------------------- */
+:root {
+  /* Fator de escala do texto. Quem quiser acompanhar multiplica por ele:
+     `font-size: calc(15px * var(--acq-esc))`. */
+  --acq-esc: 1;
+  /* Peso do corpo e dos rótulos fortes. Montserrat só carrega 400·500·600·
+     700·800 (index.html) — nenhum valor abaixo de 400 existe no documento;
+     usá-lo aqui cairia em 400 por casamento de fonte, em silêncio. */
+  --acq-peso: 400;
+  --acq-peso-forte: 500;
+  /* Ritmo de leitura. */
+  --acq-lh: 1.62;
+  --acq-ls: 0;
+  /* A prosa do livro, entre o corpo do sistema (400) e o rótulo forte —
+     guardada aqui para "texto mais forte" e "linhas soltas" alcançarem
+     capítulo de texto longo sem que cada componente saiba que o painel
+     existe. */
+  --acq-prosa: 400;
+  --acq-lh-prosa: 1.7;
+}
+
+.acq-a-g { --acq-esc: 1.15; }
+.acq-a-gg { --acq-esc: 1.3; }
+
+.acq-a-forte { --acq-peso: 600; --acq-peso-forte: 700; --acq-prosa: 600; }
+.acq-a-solto { --acq-lh: 1.95; --acq-ls: 0.02em; --acq-lh-prosa: 2.05; }
+
+/* Os dois níveis de texto apagado sobem um degrau: dim → ink, dimmer → dim.
+   RELATIVO, e não absoluto — cravar um hex aqui estaria certo no tema escuro
+   e errado no claro. `--color-dim-forte` e `--color-dimmer-forte` são
+   emitidos pelo gerador de temas apontando para o degrau ACIMA na escada de
+   texto, resolvido da paleta intocada — por isso o encadeamento não colapsa:
+   `--color-dim` vira `ink`, e `--color-dimmer` vira o dim ORIGINAL, e não o
+   dim já remapeado. */
+.acq-a-contraste {
+  --color-dim: var(--color-dim-forte);
+  --color-dimmer: var(--color-dimmer-forte);
+}
+
+/* Devolve o segundo sinal ao link. `:not()` poupa o que já é botão ou aba, que
+   têm fundo e não dependem de cor para se anunciar. */
+.acq-a-links a:not([class*='btn']):not([class*='aba']):not([class*='cta']) {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+/* Para quem NÃO configurou o sistema operacional. O `!important` é necessário
+   aqui: ele precisa vencer transições declaradas em componente. */
+.acq-a-parado *,
+.acq-a-parado *::before,
+.acq-a-parado *::after {
+  transition: none !important;
+  animation: none !important;
+  scroll-behavior: auto !important;
+}

@@ -1,0 +1,268 @@
+/* GERADO por scripts/gerar-temas.mjs — NÃO EDITE.
+ * `node scripts/verificar-temas.mjs` regera em memória e compara byte a byte.
+ * A fonte é src/tokens/temas/*.json. */
+
+/* Rede para quem embute a biblioteca sem declarar data-tema. */
+:root {
+  color-scheme: dark;
+
+  --acq-neutro-0: #ffffff;
+  --acq-neutro-50: #f3fafd;
+  --acq-neutro-75: #eaf1f5;
+  --acq-neutro-100: #e3ebef;
+  --acq-neutro-200: #c4d0d6;
+  --acq-neutro-300: #9caab2;
+  --acq-neutro-350: #82929a;
+  --acq-neutro-400: #65767f;
+  --acq-neutro-500: #475861;
+  --acq-neutro-600: #2e4049;
+  --acq-neutro-700: #23363f;
+  --acq-neutro-800: #142730;
+  --acq-neutro-900: #041b28;
+  --acq-neutro-950: #000000;
+  --acq-neutro-1000: #000306;
+  --acq-acento-50: #d3edf6;
+  --acq-acento-100: #b4e0ef;
+  --acq-acento-200: #8cd0e6;
+  --acq-acento-300: #6bc9e6;
+  --acq-acento-400: #27a8c5;
+  --acq-acento-500: #2285a0;
+  --acq-acento-600: #136779;
+  --acq-acento-700: #0a596c;
+  --acq-acento-800: #004e5f;
+  --acq-acento-900: #003947;
+  --acq-acento-950: #002934;
+  --acq-acento-voltagem: #3ed3f2;
+  --acq-positivo-50: #f0fadc;
+  --acq-positivo-100: #e8f8c4;
+  --acq-positivo-200: #dff7a4;
+  --acq-positivo-300: #d8f789;
+  --acq-positivo-400: #d3f570;
+  --acq-positivo-500: #acce3e;
+  --acq-positivo-600: #809d00;
+  --acq-positivo-700: #5d7300;
+  --acq-positivo-800: #3f4f00;
+  --acq-positivo-900: #283300;
+  --acq-positivo-950: #1b2300;
+  --acq-negativo-50: #ffe4e1;
+  --acq-negativo-100: #ffd1cd;
+  --acq-negativo-200: #ffbab3;
+  --acq-negativo-300: #ff958d;
+  --acq-negativo-400: #f57070;
+  --acq-negativo-500: #ed5959;
+  --acq-negativo-600: #cf4040;
+  --acq-negativo-700: #ac3031;
+  --acq-negativo-800: #892122;
+  --acq-negativo-900: #621516;
+  --acq-negativo-950: #490d0e;
+
+  --color-canvas: var(--acq-neutro-950);
+  --color-card: var(--acq-neutro-900);
+  --color-well: var(--acq-neutro-1000);
+  --color-soft: var(--acq-neutro-800);
+  --color-hair: var(--acq-neutro-700);
+  --color-ink: var(--acq-neutro-50);
+  --color-dim: var(--acq-neutro-300);
+  --color-dimmer: var(--acq-neutro-400);
+  --color-accent: var(--acq-acento-voltagem);
+  --color-accent-text: var(--acq-acento-300);
+  --color-accent-bg: var(--acq-acento-950);
+  --color-action: var(--acq-acento-400);
+  --color-on-action: var(--acq-neutro-950);
+  --color-on-accent: var(--acq-neutro-950);
+  --color-on-accent-bg: var(--acq-neutro-50);
+  --color-bench: var(--acq-neutro-400);
+  --color-on-bench: var(--acq-neutro-0);
+  --color-positivo: var(--acq-positivo-400);
+  --color-negativo: var(--acq-negativo-500);
+  --color-on-positivo: var(--acq-neutro-950);
+  --color-on-negativo: var(--acq-neutro-950);
+  --color-positivo-text: var(--acq-positivo-400);
+  --color-negativo-text: var(--acq-negativo-400);
+
+  --color-dimmer-forte: var(--acq-neutro-300);
+  --color-dim-forte: var(--acq-neutro-50);
+
+  --color-action-hover: var(--acq-acento-300);
+  --color-action-active: var(--acq-acento-200);
+  --color-accent-text-hover: var(--acq-acento-200);
+
+  --sombra-forca: 1;
+  --lavagem-forca: 4%;
+}
+
+[data-tema='enzo-escuro'] {
+  color-scheme: dark;
+
+  --acq-neutro-0: #ffffff;
+  --acq-neutro-50: #f3fafd;
+  --acq-neutro-75: #eaf1f5;
+  --acq-neutro-100: #e3ebef;
+  --acq-neutro-200: #c4d0d6;
+  --acq-neutro-300: #9caab2;
+  --acq-neutro-350: #82929a;
+  --acq-neutro-400: #65767f;
+  --acq-neutro-500: #475861;
+  --acq-neutro-600: #2e4049;
+  --acq-neutro-700: #23363f;
+  --acq-neutro-800: #142730;
+  --acq-neutro-900: #041b28;
+  --acq-neutro-950: #000000;
+  --acq-neutro-1000: #000306;
+  --acq-acento-50: #d3edf6;
+  --acq-acento-100: #b4e0ef;
+  --acq-acento-200: #8cd0e6;
+  --acq-acento-300: #6bc9e6;
+  --acq-acento-400: #27a8c5;
+  --acq-acento-500: #2285a0;
+  --acq-acento-600: #136779;
+  --acq-acento-700: #0a596c;
+  --acq-acento-800: #004e5f;
+  --acq-acento-900: #003947;
+  --acq-acento-950: #002934;
+  --acq-acento-voltagem: #3ed3f2;
+  --acq-positivo-50: #f0fadc;
+  --acq-positivo-100: #e8f8c4;
+  --acq-positivo-200: #dff7a4;
+  --acq-positivo-300: #d8f789;
+  --acq-positivo-400: #d3f570;
+  --acq-positivo-500: #acce3e;
+  --acq-positivo-600: #809d00;
+  --acq-positivo-700: #5d7300;
+  --acq-positivo-800: #3f4f00;
+  --acq-positivo-900: #283300;
+  --acq-positivo-950: #1b2300;
+  --acq-negativo-50: #ffe4e1;
+  --acq-negativo-100: #ffd1cd;
+  --acq-negativo-200: #ffbab3;
+  --acq-negativo-300: #ff958d;
+  --acq-negativo-400: #f57070;
+  --acq-negativo-500: #ed5959;
+  --acq-negativo-600: #cf4040;
+  --acq-negativo-700: #ac3031;
+  --acq-negativo-800: #892122;
+  --acq-negativo-900: #621516;
+  --acq-negativo-950: #490d0e;
+
+  --color-canvas: var(--acq-neutro-950);
+  --color-card: var(--acq-neutro-900);
+  --color-well: var(--acq-neutro-1000);
+  --color-soft: var(--acq-neutro-800);
+  --color-hair: var(--acq-neutro-700);
+  --color-ink: var(--acq-neutro-50);
+  --color-dim: var(--acq-neutro-300);
+  --color-dimmer: var(--acq-neutro-400);
+  --color-accent: var(--acq-acento-voltagem);
+  --color-accent-text: var(--acq-acento-300);
+  --color-accent-bg: var(--acq-acento-950);
+  --color-action: var(--acq-acento-400);
+  --color-on-action: var(--acq-neutro-950);
+  --color-on-accent: var(--acq-neutro-950);
+  --color-on-accent-bg: var(--acq-neutro-50);
+  --color-bench: var(--acq-neutro-400);
+  --color-on-bench: var(--acq-neutro-0);
+  --color-positivo: var(--acq-positivo-400);
+  --color-negativo: var(--acq-negativo-500);
+  --color-on-positivo: var(--acq-neutro-950);
+  --color-on-negativo: var(--acq-neutro-950);
+  --color-positivo-text: var(--acq-positivo-400);
+  --color-negativo-text: var(--acq-negativo-400);
+
+  --color-dimmer-forte: var(--acq-neutro-300);
+  --color-dim-forte: var(--acq-neutro-50);
+
+  --color-action-hover: var(--acq-acento-300);
+  --color-action-active: var(--acq-acento-200);
+  --color-accent-text-hover: var(--acq-acento-200);
+
+  --sombra-forca: 1;
+  --lavagem-forca: 4%;
+}
+
+[data-tema='enzo-claro'] {
+  color-scheme: light;
+
+  --acq-neutro-0: #ffffff;
+  --acq-neutro-50: #f3fafd;
+  --acq-neutro-75: #eaf1f5;
+  --acq-neutro-100: #e3ebef;
+  --acq-neutro-200: #c4d0d6;
+  --acq-neutro-300: #9caab2;
+  --acq-neutro-350: #82929a;
+  --acq-neutro-400: #65767f;
+  --acq-neutro-500: #475861;
+  --acq-neutro-600: #2e4049;
+  --acq-neutro-700: #23363f;
+  --acq-neutro-800: #142730;
+  --acq-neutro-900: #041b28;
+  --acq-neutro-950: #000000;
+  --acq-neutro-1000: #000306;
+  --acq-acento-50: #d3edf6;
+  --acq-acento-100: #b4e0ef;
+  --acq-acento-200: #8cd0e6;
+  --acq-acento-300: #6bc9e6;
+  --acq-acento-400: #27a8c5;
+  --acq-acento-500: #2285a0;
+  --acq-acento-600: #136779;
+  --acq-acento-700: #0a596c;
+  --acq-acento-800: #004e5f;
+  --acq-acento-900: #003947;
+  --acq-acento-950: #002934;
+  --acq-acento-voltagem: #136779;
+  --acq-positivo-50: #f0fadc;
+  --acq-positivo-100: #e8f8c4;
+  --acq-positivo-200: #dff7a4;
+  --acq-positivo-300: #d8f789;
+  --acq-positivo-400: #d3f570;
+  --acq-positivo-500: #acce3e;
+  --acq-positivo-600: #809d00;
+  --acq-positivo-700: #5d7300;
+  --acq-positivo-800: #3f4f00;
+  --acq-positivo-900: #283300;
+  --acq-positivo-950: #1b2300;
+  --acq-negativo-50: #ffe4e1;
+  --acq-negativo-100: #ffd1cd;
+  --acq-negativo-200: #ffbab3;
+  --acq-negativo-300: #ff958d;
+  --acq-negativo-400: #f57070;
+  --acq-negativo-500: #ed5959;
+  --acq-negativo-600: #cf4040;
+  --acq-negativo-700: #ac3031;
+  --acq-negativo-800: #892122;
+  --acq-negativo-900: #621516;
+  --acq-negativo-950: #490d0e;
+
+  --color-canvas: var(--acq-neutro-50);
+  --color-card: var(--acq-neutro-0);
+  --color-well: var(--acq-neutro-75);
+  --color-soft: var(--acq-neutro-100);
+  --color-hair: var(--acq-neutro-200);
+  --color-ink: var(--acq-neutro-950);
+  --color-dim: var(--acq-neutro-500);
+  --color-dimmer: var(--acq-neutro-350);
+  --color-accent: var(--acq-acento-voltagem);
+  --color-accent-text: var(--acq-acento-800);
+  --color-accent-bg: var(--acq-acento-50);
+  --color-action: var(--acq-acento-600);
+  --color-on-action: var(--acq-neutro-0);
+  --color-on-accent: var(--acq-neutro-0);
+  --color-on-accent-bg: var(--acq-neutro-950);
+  --color-bench: var(--acq-neutro-400);
+  --color-on-bench: var(--acq-neutro-0);
+  --color-positivo: var(--acq-positivo-700);
+  --color-negativo: var(--acq-negativo-600);
+  --color-on-positivo: var(--acq-neutro-0);
+  --color-on-negativo: var(--acq-neutro-0);
+  --color-positivo-text: var(--acq-positivo-800);
+  --color-negativo-text: var(--acq-negativo-700);
+
+  --color-dimmer-forte: var(--acq-neutro-500);
+  --color-dim-forte: var(--acq-neutro-950);
+
+  --color-action-hover: var(--acq-acento-700);
+  --color-action-active: var(--acq-acento-800);
+  --color-accent-text-hover: var(--acq-acento-900);
+
+  --sombra-forca: 0.5;
+  --lavagem-forca: 6%;
+}

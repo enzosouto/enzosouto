@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Login no registry
-        run: echo "${{ secrets.REGISTRY_TOKEN }}" | docker login git.risilva.com -u enzo --password-stdin
+        run: echo "${{ secrets.ENZOSOUTOCV }}" | docker login git.risilva.com -u enzo --password-stdin
 
       - name: Build e push (no PC)
         run: |
@@ -32,7 +32,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Login no registry (VPS)
-        run: echo "${{ secrets.REGISTRY_TOKEN }}" | sudo docker login git.risilva.com -u enzo --password-stdin || true
+        run: echo "${{ secrets.ENZOSOUTOCV }}" | sudo docker login git.risilva.com -u enzo --password-stdin || true
 
       - name: Deploy e smoke
         run: |

@@ -19,12 +19,16 @@
 
 export type Idioma = 'pt' | 'en'
 
-export type Rede = { nome: string; url: string; icone: string }
+/** `icone` é o selo branco (fundo claro, traço preto) — lê bem sobre o
+ *  canvas escuro. `iconeClaro` é o mesmo selo invertido (fundo preto, traço
+ *  branco) — é o que lê no tema claro; o branco sobre um canvas quase
+ *  branco só desaparece. */
+export type Rede = { nome: string; url: string; icone: string; iconeClaro: string }
 
 /** GitHub/LinkedIn: nome e link não mudam com o idioma. */
 export const REDES: Rede[] = [
-  { nome: 'GitHub', url: 'https://github.com/enzosouto', icone: '/redes/github.png' },
-  { nome: 'LinkedIn', url: 'https://www.linkedin.com/in/enzosd/', icone: '/redes/linkedin.png' },
+  { nome: 'GitHub', url: 'https://github.com/enzosouto', icone: '/redes/github.png', iconeClaro: '/redes/github-preto.png' },
+  { nome: 'LinkedIn', url: 'https://www.linkedin.com/in/enzosd/', icone: '/redes/linkedin.png', iconeClaro: '/redes/linkedin-preto.png' },
 ]
 
 /* O ENXAME DE LOGOS que flutua ao lado das habilidades — `x`/`y` em

@@ -135,14 +135,23 @@ onBeforeUnmount(() => {
   document.body.style.overflow = ''
 })
 
-/* O SELO DE EMPRESA/INSTITUIÇÃO — altura fixa, largura na proporção do
-   logo (clampada, pra um logo bem largo tipo FIAP não virar uma barra). A
-   mesma conta que o antigo `LogoInstituicao` fazia, agora alimentando o
-   `RetratoFragmentado` (`sem-moldura`, só o quadro montando em cacos). */
+/* O SELO DE EMPRESA/INSTITUIÇÃO — CABE dentro do mesmo quadro (96×56) pros
+   selos ocuparem o mesmo tamanho no cartão, sem esticar nenhum. Escala
+   ÚNICA por logo (`Math.min` dos dois eixos, o mesmo "contain" do
+   `object-fit`), então a proporção sobrevive: o eixo que bate primeiro no
+   limite do quadro é quem decide a escala, o outro fica menor que o quadro.
+   Um logo quase quadrado (BRB Card) já batia na altura antes e continua
+   batendo — não muda nada pra esses. O que muda é o logo bem mais largo que
+   alto (FIAP, ~3,3:1): antes ele só respeitava a altura de 56px e a
+   largura crescia livre até 196px, ficando visualmente bem maior que a
+   UniCEUB (~1,7:1, que cabia em ~96×56 sem forçar nada); agora os dois
+   cabem no MESMO quadro — a FIAP fica mais baixa (mais larga que alta é
+   assim mesmo, sem distorcer), mas a "caixa" que ela ocupa é a mesma. */
 function tamanhoSelo(logo: { w: number; h: number }) {
-  const altura = 56
-  const largura = Math.min(Math.max(altura * (logo.w / logo.h), altura), altura * 3.5)
-  return { largura, altura }
+  const QUADRO_W = 96
+  const QUADRO_H = 56
+  const escala = Math.min(QUADRO_W / logo.w, QUADRO_H / logo.h)
+  return { largura: logo.w * escala, altura: logo.h * escala }
 }
 </script>
 
@@ -207,7 +216,7 @@ function tamanhoSelo(logo: { w: number; h: number }) {
             rel="noopener"
             :aria-label="r.nome"
           >
-            <img :src="r.icone" alt="" />
+            <img :src="tema.esquema === 'claro' ? r.iconeClaro : r.icone" alt="" />
           </a>
         </AcqStack>
         <p class="lead">{{ C.HERO.lead }}</p>
@@ -332,7 +341,7 @@ function tamanhoSelo(logo: { w: number; h: number }) {
 
           <div class="idiomas">
             <AcqMeta as="p" role="label" class="grupo-nome">{{ T.idiomas }}</AcqMeta>
-            <AcqStack direction="row" gap="sm" wrap>
+            <AcqStack direction="row" gap="sm" wrap justify="center">
               <AcqTag
                 v-for="i in C.FORMACAO.idiomas"
                 :key="i.idioma"
@@ -652,7 +661,7 @@ function tamanhoSelo(logo: { w: number; h: number }) {
   margin: 0 auto 40px;
 }
 .cert-card {
-  max-width: 520px;
+  max-width: 860px;
   margin-inline: auto;
 }
 .pdf-topo {

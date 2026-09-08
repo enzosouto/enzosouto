@@ -334,7 +334,13 @@ function tamanhoSelo(logo: { w: number; h: number }) {
       <AcqStack direction="row" gap="sm" wrap justify="center" class="contato">
         <a class="contato-link" :href="`mailto:${CONTATO.email}`">{{ CONTATO.email }}</a>
         <span class="contato-sep" aria-hidden="true">·</span>
-        <a class="contato-link" :href="`tel:${CONTATO.telefone.replace(/[^\d+]/g, '')}`">{{ CONTATO.telefone }}</a>
+        <a
+          class="contato-link"
+          :href="`https://wa.me/${CONTATO.telefone.replace(/\D/g, '')}`"
+          target="_blank"
+          rel="noopener"
+          >{{ CONTATO.telefone }}</a
+        >
         <span class="contato-sep" aria-hidden="true">·</span>
         <span class="contato-link contato-local">{{ CONTATO.local }}</span>
       </AcqStack>

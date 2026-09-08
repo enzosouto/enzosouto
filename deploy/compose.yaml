@@ -8,12 +8,12 @@
 # registro DNS novo, só a rota abaixo. O certificado é POR HOST (mesma razão
 # documentada no compose da acquario-site: dois desafios `_acme-challenge` no
 # mesmo nome perdem a corrida do lego/Traefik) — não usa `tls.domains`.
-name: enzo-souto
+name: enzosouto
 
 services:
-  enzo-souto:
-    image: git.risilva.com/enzo/enzo-souto:${TAG:-latest}
-    container_name: enzo-souto
+  enzosouto:
+    image: git.risilva.com/enzo/enzosouto:${TAG:-latest}
+    container_name: enzosouto
     restart: unless-stopped
     mem_limit: 128m
     memswap_limit: 128m
@@ -27,11 +27,11 @@ services:
     labels:
       - 'traefik.enable=true'
       - 'traefik.docker.network=edge'
-      - 'traefik.http.services.enzo-souto.loadbalancer.server.port=80'
-      - 'traefik.http.routers.enzo-souto.rule=Host(`enzosouto.acquario.digital`)'
-      - 'traefik.http.routers.enzo-souto.entrypoints=websecure'
-      - 'traefik.http.routers.enzo-souto.tls=true'
-      - 'traefik.http.routers.enzo-souto.tls.certresolver=cf'
+      - 'traefik.http.services.enzosouto.loadbalancer.server.port=80'
+      - 'traefik.http.routers.enzosouto.rule=Host(`enzosouto.acquario.digital`)'
+      - 'traefik.http.routers.enzosouto.entrypoints=websecure'
+      - 'traefik.http.routers.enzosouto.tls=true'
+      - 'traefik.http.routers.enzosouto.tls.certresolver=cf'
 
 networks:
   edge:

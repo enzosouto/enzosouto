@@ -20,7 +20,7 @@ jobs:
 
       - name: Build e push (no PC)
         run: |
-          IMG=git.risilva.com/enzo/enzo-souto
+          IMG=git.risilva.com/enzo/enzosouto
           docker build -t "$IMG:${{ github.sha }}" -t "$IMG:latest" .
           docker push "$IMG:${{ github.sha }}"
           docker push "$IMG:latest"
@@ -36,9 +36,9 @@ jobs:
 
       - name: Deploy e smoke
         run: |
-          sudo install -D -m644 deploy/compose.yaml /opt/infra/compose/enzo-souto/compose.yaml
-          echo "TAG=${{ github.sha }}" | sudo tee /opt/infra/compose/enzo-souto/.env
-          sudo /opt/infra/scripts/deploy.sh enzo-souto
+          sudo install -D -m644 deploy/compose.yaml /opt/infra/compose/enzosouto/compose.yaml
+          echo "TAG=${{ github.sha }}" | sudo tee /opt/infra/compose/enzosouto/.env
+          sudo /opt/infra/scripts/deploy.sh enzosouto
 
           alvo=enzosouto.acquario.digital
           bate() { curl -s -o /dev/null -w '%{http_code}' --resolve $alvo:443:127.0.0.1 -k https://$alvo; }

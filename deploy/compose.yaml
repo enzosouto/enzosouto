@@ -12,7 +12,7 @@ name: enzosouto
 
 services:
   enzosouto:
-    image: git.risilva.com/enzo/enzosouto:${TAG:-latest}
+    image: git.risilva.com/emerson/enzosouto:${TAG:-latest}
     container_name: enzosouto
     restart: unless-stopped
     mem_limit: 128m

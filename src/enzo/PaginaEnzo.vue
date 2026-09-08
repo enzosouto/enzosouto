@@ -46,6 +46,7 @@ import AcqOnda from '@/lib/marca/AcqOnda/AcqOnda.vue'
 import AcqReveal from '@/lib/base/AcqReveal/AcqReveal.vue'
 import AcqFluxo from '@/lib/instrumento/AcqFluxo/AcqFluxo.vue'
 import { useSecaoAtiva } from '@/lib/useSecaoAtiva'
+import { useTema } from '@/lib/useTema'
 import AmbienteLiquido from '@/componentes/AmbienteLiquido.vue'
 import SecaoProjetos from './SecaoProjetos.vue'
 import HexFerramentas from './HexFerramentas.vue'
@@ -77,6 +78,13 @@ function trocarIdioma(novo: Idioma) {
 // então dá pra escutar a rolagem uma vez só, fora da reatividade do idioma.
 const { ativa } = useSecaoAtiva(C.value.NAV.map((n) => n.id))
 
+// CLARO/ESCURO. `useTema` já existia (é dele que `main.ts` lê o tema salvo
+// antes de montar); aqui só se pega `tema`/`trocarEsquema` pra ligar o botão
+// do cabeçalho. `enzo-claro` já vinha pronto em `temas.gen.css` — a
+// biblioteca sempre teve os dois esquemas por família, só nunca tinha botão
+// pra trocar.
+const { tema, trocarEsquema } = useTema()
+
 function subtituloCargo(cargo: ReturnType<typeof conteudo>['EXPERIENCIA']['cargos'][number]) {
   return cargo.periodo ? `${cargo.cargo} · ${cargo.periodo}` : cargo.cargo
 }
@@ -91,12 +99,14 @@ const TEXTO_UI = {
     pdf: 'PDF', certificacoes: 'Certificações', idiomas: 'Idiomas', emAndamento: 'em andamento', atual: 'atual',
     projetosLabel: 'projetos', projetosTitulo: 'Projetos pessoais de dados',
     modalTitulo: 'Baixar currículo em qual idioma?', modalPt: 'Português', modalEn: 'English', modalFechar: 'Fechar',
+    temaClaro: 'Mudar para o modo claro', temaEscuro: 'Mudar para o modo escuro',
   },
   en: {
     verExperiencia: 'See experience ↓', verProjetos: 'See projects ↓',
     pdf: 'PDF', certificacoes: 'Certifications', idiomas: 'Languages', emAndamento: 'in progress', atual: 'current',
     projetosLabel: 'projects', projetosTitulo: 'Personal data projects',
     modalTitulo: 'Download the résumé in which language?', modalPt: 'Português', modalEn: 'English', modalFechar: 'Close',
+    temaClaro: 'Switch to light mode', temaEscuro: 'Switch to dark mode',
   },
 } as const
 const T = computed(() => TEXTO_UI[idioma.value])
@@ -158,6 +168,20 @@ function tamanhoSelo(logo: { w: number; h: number }) {
       <button type="button" :class="{ ativo: idioma === 'pt' }" :aria-pressed="idioma === 'pt'" @click="trocarIdioma('pt')">PT</button>
       <button type="button" :class="{ ativo: idioma === 'en' }" :aria-pressed="idioma === 'en'" @click="trocarIdioma('en')">EN</button>
     </div>
+    <button
+      type="button"
+      class="tema-toggle"
+      :aria-label="tema.esquema === 'claro' ? T.temaEscuro : T.temaClaro"
+      @click="trocarEsquema"
+    >
+      <svg v-if="tema.esquema === 'claro'" aria-hidden="true" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79Z" />
+      </svg>
+      <svg v-else aria-hidden="true" viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="4.2" />
+        <path d="M12 2.5v2.4M12 19.1v2.4M4.6 4.6l1.7 1.7M17.7 17.7l1.7 1.7M2.5 12h2.4M19.1 12h2.4M4.6 19.4l1.7-1.7M17.7 6.3l1.7-1.7" />
+      </svg>
+    </button>
     <AcqButton class="pdf-topo" variant="outline" size="sm" type="button" @click="abrirModalPdf">
       <AcqOnda />{{ T.pdf }}
     </AcqButton>
@@ -667,6 +691,31 @@ function tamanhoSelo(logo: { w: number; h: number }) {
 }
 .idioma-toggle button:not(.ativo):hover {
   color: var(--color-ink);
+}
+
+/* O BOTÃO DE CLARO/ESCURO. Mesmo círculo de 30px do `.modal-fechar` — um
+   ícone só, sem rótulo de texto (o `aria-label` já diz a ação; sol/lua já
+   diz o estado). Troca de emoji em vez de classe ativa/inativa porque não
+   há "opção errada" aqui, só o estado atual. */
+.tema-toggle {
+  flex: 0 0 auto;
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-hair);
+  border-radius: 50%;
+  background: var(--color-card);
+  color: var(--color-dim);
+  cursor: pointer;
+  transition: border-color var(--dur-rapido) var(--mov-onda), color var(--dur-rapido) var(--mov-onda), transform var(--dur-rapido) var(--mov-onda);
+}
+.tema-toggle:hover,
+.tema-toggle:focus-visible {
+  border-color: var(--color-accent-text);
+  color: var(--color-accent-text);
+  transform: translateY(-2px);
 }
 
 /* O MODAL DO PDF. */

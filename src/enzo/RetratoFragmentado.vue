@@ -144,8 +144,13 @@ onBeforeUnmount(() => obs?.disconnect())
         :style="{
           left: `${ca.c * TILE_W}px`,
           top: `${ca.r * TILE_H}px`,
-          width: `${TILE_W}px`,
-          height: `${TILE_H}px`,
+          // +1px de sobra: sem ela, a costura entre cacos vizinhos deixa
+          // passar 1px do que está atrás (invisível no tema escuro, onde o
+          // canvas é quase preto — vira uma grade clara por cima da foto no
+          // tema claro, onde o canvas é branco). `overflow: hidden` em
+          // `.cacos` corta a sobra dos cacos da borda direita/de baixo.
+          width: `${TILE_W + 1}px`,
+          height: `${TILE_H + 1}px`,
           backgroundImage: `url(${arquivo})`,
           backgroundSize: `${COVER_W}px ${COVER_H}px`,
           backgroundPosition: `${ca.bgX}px ${ca.bgY}px`,

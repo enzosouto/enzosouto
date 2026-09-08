@@ -1,0 +1,38 @@
+# O currículo do Enzo na VPS — mesmo padrão da acquario-site: rota HTTPS nas
+# labels, viajando com o app. Serviço PRÓPRIO (nome, container, rede) — não
+# toca no compose da acquario-site, então nada que já está no ar quebra.
+#
+# `enzosouto.acquario.digital` é subdomínio do domínio próprio da casa — se o
+# wildcard `*.acquario.digital` já estiver coberto no Cloudflare (do jeito que
+# `c01.acquario.digital` e `www.acquario.digital` já são hoje), não precisa de
+# registro DNS novo, só a rota abaixo. O certificado é POR HOST (mesma razão
+# documentada no compose da acquario-site: dois desafios `_acme-challenge` no
+# mesmo nome perdem a corrida do lego/Traefik) — não usa `tls.domains`.
+name: enzo-souto
+
+services:
+  enzo-souto:
+    image: git.risilva.com/emerson/enzo-souto:${TAG:-latest}
+    container_name: enzo-souto
+    restart: unless-stopped
+    mem_limit: 128m
+    memswap_limit: 128m
+    cpus: 0.5
+    networks: [edge]
+    healthcheck:
+      test: ['CMD-SHELL', 'wget -qO- http://127.0.0.1/ >/dev/null 2>&1 || exit 1']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    labels:
+      - 'traefik.enable=true'
+      - 'traefik.docker.network=edge'
+      - 'traefik.http.services.enzo-souto.loadbalancer.server.port=80'
+      - 'traefik.http.routers.enzo-souto.rule=Host(`enzosouto.acquario.digital`)'
+      - 'traefik.http.routers.enzo-souto.entrypoints=websecure'
+      - 'traefik.http.routers.enzo-souto.tls=true'
+      - 'traefik.http.routers.enzo-souto.tls.certresolver=cf'
+
+networks:
+  edge:
+    external: true

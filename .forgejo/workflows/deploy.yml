@@ -1,0 +1,59 @@
+
+name: Deploy
+
+on:
+  push:
+    branches: [master]
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login no registry
+        run: echo "${{ secrets.REGISTRY_TOKEN }}" | docker login git.risilva.com -u emerson --password-stdin
+
+      - name: Build e push (no PC)
+        run: |
+          IMG=git.risilva.com/emerson/enzo-souto
+          docker build -t "$IMG:${{ github.sha }}" -t "$IMG:latest" .
+          docker push "$IMG:${{ github.sha }}"
+          docker push "$IMG:latest"
+
+  deploy:
+    needs: build
+    runs-on: deploy
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login no registry (VPS)
+        run: echo "${{ secrets.REGISTRY_TOKEN }}" | sudo docker login git.risilva.com -u emerson --password-stdin || true
+
+      - name: Deploy e smoke
+        run: |
+          sudo install -D -m644 deploy/compose.yaml /opt/infra/compose/enzo-souto/compose.yaml
+          echo "TAG=${{ github.sha }}" | sudo tee /opt/infra/compose/enzo-souto/.env
+          sudo /opt/infra/scripts/deploy.sh enzo-souto
+
+          alvo=enzosouto.acquario.digital
+          bate() { curl -s -o /dev/null -w '%{http_code}' --resolve $alvo:443:127.0.0.1 -k https://$alvo; }
+
+          for tentativa in $(seq 1 20); do
+            code=$(bate)
+            [ "$code" = 200 ] && break
+            sleep 3
+          done
+
+          if [ "$code" != 200 ]; then
+            sudo docker restart traefik
+            sleep 8
+            code=$(bate)
+          fi
+
+          echo "smoke=$code após ${tentativa} tentativa(s)"
+          test "$code" = 200

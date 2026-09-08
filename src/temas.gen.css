@@ -232,7 +232,7 @@
   --acq-negativo-900: #621516;
   --acq-negativo-950: #490d0e;
 
-  --color-canvas: var(--acq-neutro-50);
+  --color-canvas: var(--acq-neutro-0);
   --color-card: var(--acq-neutro-0);
   --color-well: var(--acq-neutro-75);
   --color-soft: var(--acq-neutro-100);

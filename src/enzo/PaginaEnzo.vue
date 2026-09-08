@@ -161,7 +161,7 @@ function tamanhoSelo(logo: { w: number; h: number }) {
 
   <header class="topo">
     <a class="marca" href="#topo" aria-label="Enzo Souto, início do currículo">
-      <img src="/logo-es.png" alt="Enzo Souto" class="assinatura-nav" />
+      <img :src="tema.esquema === 'claro' ? '/logo-es-claro.png' : '/logo-es.png'" alt="Enzo Souto" class="assinatura-nav" />
     </a>
     <nav class="links" aria-label="Seções do currículo">
       <a
